@@ -5,6 +5,7 @@ bool prime(int number);
 
 int main(void)
 {
+    // Get the minimum value
     int min;
     do
     {
@@ -12,6 +13,7 @@ int main(void)
     }
     while (min < 1);
 
+    // Get the maximum value
     int max;
     do
     {
@@ -19,6 +21,7 @@ int main(void)
     } 
     while (min >= max);
     
+    // Get all the prime numbers in the given range
     for (int i = min; i <= max; i++)
     {
         if (prime(i))
@@ -31,12 +34,13 @@ int main(void)
 bool prime(int number)
 {
     // Check whether prime or not
-    for (int j = 2; j < number; j++)
+    // *Ending teh check with n - 1 as n % (n - 1) != 0
+    for (int j = 2; j < number - 1; j++)
     {
-        if (number % i) == 0
+        if (number % j == 0)
         {
             return false;
         } 
-    return true;
     }
+    return true;
 }
