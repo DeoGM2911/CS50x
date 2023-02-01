@@ -1,7 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 
-void build(int h, string c);
+void build(int n, int h, string c);
 
 int main(void)
 {
@@ -17,15 +17,22 @@ int main(void)
     string c1 = "#";
     for (int i = 1; i <= n; i++)
     {
-        build(i, c1);
+        build(n, i, c1);
     }
 }
 
-void build(int h, string s)
+void build(int n, int h, string s)
 {
+    // Print the spaces out first
+    for (int u = 1; u <= (n - h); u++)
+    {
+        printf(" ");
+    }
+    // Print out the hashes a.k.a. the bricks
     for (int k = 1; k <= h; k++)
     {
         printf("%s", s);
     }
+    // End the line with a new line
     printf("\n");
 }
