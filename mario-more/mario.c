@@ -33,6 +33,12 @@ void build(int n, int h, string s)
     {
         printf("%s", s);
     }
-    // End the line with a new line
+    // End pyramid No.1 with 2 spaces
+    printf("  ");
+    // Repeat the process but backward
+    for (int v = 1; v <= h; v++)
+    {
+        printf("%s", s);
+    }
     printf("\n");
 }
