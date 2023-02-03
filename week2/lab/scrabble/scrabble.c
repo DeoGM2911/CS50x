@@ -38,13 +38,13 @@ int compute_score(string word)
         if (islower(word[i]))
         {
             // Convert the number to the score when the char is lowercased
-            sum += POINTS[(int) word[i] - 97];
+            score += POINTS[(int) word[i] - 97];
         }
         else
         {
             // Convert the number to the score when the char is uppercased
-            sum += POINTS[(int) word[i] - 65];
+            score += POINTS[(int) word[i] - 65];
         }
     }
-    return sum;
+    return score;
 }
