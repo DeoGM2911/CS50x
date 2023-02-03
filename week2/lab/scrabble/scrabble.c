@@ -18,15 +18,20 @@ int main(void)
     int score1 = compute_score(word1);
     int score2 = compute_score(word2);
     
-    // Decide the winner. If the scores are equal, then player 1 wins.
-    if (score1 >= score2)
+    // Decide the winner
+    if (score1 > score2)
     {
         printf("Player 1 wins!\n");
     }
-    else
+    else if (score2 > score1)
     {
         printf("Player 2 wins!\n");
     }
+    else
+    {
+        printf("Tie!\n");
+    }
+    
 }
 
 int compute_score(string word)
@@ -40,7 +45,7 @@ int compute_score(string word)
             // Convert the number to the score when the char is lowercased
             score += POINTS[(int) word[i] - 97];
         }
-        else
+        else if (isupper(word[i]))
         {
             // Convert the number to the score when the char is uppercased
             score += POINTS[(int) word[i] - 65];
