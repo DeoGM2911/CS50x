@@ -26,12 +26,24 @@ void print_word(string guess, int wordsize, int status[]);
 int main(int argc, string argv[])
 {
     // ensure proper usage
-    // TODO #1
+    if (argc != 2)
+    {
+        printf("Usage: ./wordle length\n");
+        return 1;
+    }
 
     int wordsize = 0;
 
     // ensure argv[1] is either 5, 6, 7, or 8 and store that value in wordsize instead
-    // TODO #2
+    if (strcmp(argv[1], "5") == 0 || strcmp(argv[1], "6") == 0 || strcmp(argv[1], "7") == 0 || strcmp(argv[1], "8") == 0)
+    {
+        wordsize = atoi(argv[1]);
+    }
+    else
+    {
+        printf("Error: the length of the word must be 5, 6, 7, or 8.\n");
+        return 1;
+    }
 
     // open correct file, each file has exactly LISTSIZE words
     char wl_filename[6];
@@ -73,13 +85,16 @@ int main(int argc, string argv[])
         int status[wordsize];
 
         // set all elements of status array initially to 0, aka WRONG
-        // TODO #4
+        for (int j = 0; j < wordsize; j++)
+        {
+            status[j] = WRONG;
+        }
 
         // Calculate score for the guess
         int score = check_word(guess, wordsize, status, choice);
 
         printf("Guess %i: ", i + 1);
-        
+
         // Print the guess
         print_word(guess, wordsize, status);
 
@@ -92,45 +107,91 @@ int main(int argc, string argv[])
     }
 
     // Print the game's result
-    // TODO #7
-
-    // that's all folks!
+    if (won)
+    {
+        printf("You win!\n");
+    }
+    else
+    {
+        printf("Out of guesses!\nThe correct word is %s\n", choice);
+    }
     return 0;
 }
 
 string get_guess(int wordsize)
 {
-    string guess = "";
-
     // ensure users actually provide a guess that is the correct length
-    // TODO #3
-
+    string guess;
+    while (true)
+    {
+        guess = get_string("Input a %i-letter word: ", wordsize);
+        if (strlen(guess) == wordsize)
+        {
+            break;
+        }
+    }
     return guess;
 }
 
 int check_word(string guess, int wordsize, int status[], string choice)
 {
-    int score = 0;
-
     // compare guess to choice and score points as appropriate, storing points in status
-    // TODO #5
-
-    // HINTS
+    int score = 0;
     // iterate over each letter of the guess
+    for (int i = 0; i < wordsize; i++)
+    {
         // iterate over each letter of the choice
-            // compare the current guess letter to the current choice letter
-                // if they're the same position in the word, score EXACT points (green) and break so you don't compare that letter further
-                // if it's in the word, but not the right spot, score CLOSE point (yellow)
-        // keep track of the total score by adding each individual letter's score from above
-
+        for (int j = 0; j < wordsize; j++)
+        {
+            if ((guess[i] == choice[j]) && (i == j))
+            {
+                status[i] = EXACT;
+                break;
+            }
+            else if ((guess[i] == choice[j]) && (i != j))
+            {
+                status[i] = CLOSE;
+            }
+            else
+            {
+                if (status[i] == 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    status[i] = WRONG;
+                }
+            }
+        }
+    }
+    // keep track of the total score by adding each individual letter's score from above
+    for (int k = 0; k < wordsize; k++)
+    {
+        score += status[k];
+    }
     return score;
 }
 
 void print_word(string guess, int wordsize, int status[])
 {
     // print word character-for-character with correct color coding, then reset terminal font to normal
-    // TODO #6
-
+    for (int n = 0; n < wordsize; n++)
+    {
+        if (status[n] == EXACT)
+        {
+            printf(GREEN"%c"RESET, guess[n]);
+        }
+        else if (status[n] == CLOSE)
+        {
+            printf(YELLOW"%c"RESET, guess[n]);
+        }
+        else
+        {
+            printf(RED"%c"RESET, guess[n]);
+        }
+    }
+    // End the line with a new line char
     printf("\n");
     return;
 }
