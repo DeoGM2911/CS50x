@@ -1,0 +1,14 @@
+sort1 uses: Bubble Sort
+
+How do you know?: This sort is relatively slow in the reversed and random senarios. However, in the sorted one, it performed
+considerably better (actually the fastest of all three).
+
+sort2 uses: Merge Sort
+
+How do you know?: This sort always take a relatively same amount of time with the random, reversed, and sorted file,
+but it takes much less time compared to the sort3 one.
+
+sort3 uses: Selection Sort
+
+How do you know?: This sort always take a relatively same amount of time with the random, reversed, and sorted file. In addition,
+it also take more time than the sort2 one in all 3 senarios (sort2 also have same amount of time across all 3 types)
