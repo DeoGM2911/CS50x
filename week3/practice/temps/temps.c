@@ -64,9 +64,11 @@ int main(void)
 // Sort cities by temperature in descending order
 void sort_cities(void)
 {
-    // Selection sort algorithm.
+    // Selection sort algorithm (reversed).
     // (Time complexit O(n^2), Space complexity O(NUM_CITIES))
-    int smallest;
+    int largest;
+    string pld_city;
+    int index;
     for (int i = 0; i < NUM_CITIES; i++)
     {
         // Find the smallest elements in a sub-array
@@ -74,19 +76,28 @@ void sort_cities(void)
         {
             if (j == 0)
             {
-                smallest = temps[i].temp;
+                largest = temps[i].temp;
+                pld_city = temps[j + i].city;
+                index = j + i;
                 continue;
             }
-            if (smallest > temps[j + i].temp)
+            if (largest <= temps[j + i].temp)
             {
-                smallest = temps[j + i].temp;
+                // Take out the data
+                largest = temps[j + i].temp;
+                pld_city = temps[j + i].city;
+                index = j + i;
             }
         }
-        temps[i].temp = smallest;
+        // Swap elements
+        temps[index] = temps[i];
+        temps[i].city = pld_city;
+        temps[i].temp = largest;
     }
     /* Bubble sort algorithm
      * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
-    int placeholder;
+    int temphd;
+    string cityhd;
     * Only n - 1 iterations are needed (the smallest and second smallest number fall in place the same time)
     for (int i = 0; i < NUM_CITIES - 1; i++)
     {
@@ -96,19 +107,18 @@ void sort_cities(void)
             if (temps[j].temp <= temps[j + 1].temp)
             {
                 * Condition satisfied
-                break;
+                continue;
             }
             if (temps[j].temp > temps[j + 1].temp)
             {
                 * Swap the elements
-                placeholder = temps[j].temp
-                temps[j].temp = temps[j + 1].temp;
-                temps[j + 1].temp = placeholder;
+                temphd = temps[j + 1].temp;
+                cityhd = temps[j + 1].city;
+                temps[j + 1] = temps[j];
+                temps[j].temp = temphd;
+                temps[j].city = cityhd;
             }
         }
     }
-    */
-    /* Insertion sort algorithm
-     * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
     */
 }
