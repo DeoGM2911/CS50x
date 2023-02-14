@@ -75,6 +75,7 @@ void sort_cities(void)
             if (j == 0)
             {
                 smallest = temps[i];
+                continue;
             }
             if (smallest > temps[j + i])
             {
@@ -86,22 +87,28 @@ void sort_cities(void)
     /* Bubble sort algorithm
      * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
     int placeholder;
-    for (int i = 0; i < NUM_CITIES; i++)
+    * Only n - 1 iterations are needed (the smallest and second smallest number fall in place the same time)
+    for (int i = 0; i < NUM_CITIES - 1; i++)
     {
-        for (int j = i; j < NUM_CITIES; j++)
+        * Compare a maximum of n - 1 times
+        for (int j = 0; j < NUM_CITIES - 1; j++)
         {
-            if (temps[i] <= temps[j + i])
+            if (temps[j] <= temps[j + 1])
             {
+                * Condition satisfied
                 break;
             }
-            if (temps[i] > temps[j])
+            if (temps[j] > temps[j + 1])
             {
+                * Swap the elements
                 placeholder = temps[j]
-                temps[i] = temps[i + 1];
-                temps[]
+                temps[j] = temps[j + 1];
+                temps[j + 1] = placeholder;
             }
         }
-        temps[i] = smallest
     }
+    */
+    /* Insertion sort algorithm
+     * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
     */
 }
