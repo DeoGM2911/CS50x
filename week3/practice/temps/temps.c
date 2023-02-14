@@ -82,7 +82,7 @@ void sort_cities(void)
                 smallest = temps[j + i].temp;
             }
         }
-        temps[i].temp = smallest
+        temps[i].temp = smallest;
     }
     /* Bubble sort algorithm
      * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
