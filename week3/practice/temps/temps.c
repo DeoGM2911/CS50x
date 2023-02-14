@@ -74,15 +74,15 @@ void sort_cities(void)
         {
             if (j == 0)
             {
-                smallest = temps[i];
+                smallest = temps[i].temp;
                 continue;
             }
-            if (smallest > temps[j + i])
+            if (smallest > temps[j + i].temp)
             {
-                smallest = temps[j + i];
+                smallest = temps[j + i].temp;
             }
         }
-        temps[i] = smallest
+        temps[i].temp = smallest
     }
     /* Bubble sort algorithm
      * (Time complexit O(n^2), Space complexity O(NUM_CITIES))
@@ -93,17 +93,17 @@ void sort_cities(void)
         * Compare a maximum of n - 1 times
         for (int j = 0; j < NUM_CITIES - 1; j++)
         {
-            if (temps[j] <= temps[j + 1])
+            if (temps[j].temp <= temps[j + 1].temp)
             {
                 * Condition satisfied
                 break;
             }
-            if (temps[j] > temps[j + 1])
+            if (temps[j].temp > temps[j + 1].temp)
             {
                 * Swap the elements
-                placeholder = temps[j]
-                temps[j] = temps[j + 1];
-                temps[j + 1] = placeholder;
+                placeholder = temps[j].temp
+                temps[j].temp = temps[j + 1].temp;
+                temps[j + 1].temp = placeholder;
             }
         }
     }
