@@ -44,17 +44,18 @@ float get_cost(string item);
 
 int main(void)
 {
+    // Add items to menu
     add_items();
-
+    // Print the greetings
     printf("\nWelcome to Beach Burger Shack!\n");
     printf("Choose from the following menu to order. Press enter when done.\n\n");
-
+    // Print out the menu
     for (int i = 0; i < NUM_ITEMS; i++)
     {
         printf("%s: $%.2f\n", menu[i].item, menu[i]. price);
     }
     printf("\n");
-
+    // Get the price
     float total = 0;
     while (true)
     {
@@ -64,21 +65,52 @@ int main(void)
             printf("\n");
             break;
         }
-
+        // Add to the total price
         total += get_cost(item);
     }
-
+    // Print the total price
     printf("Your total cost is: $%.2f\n", total);
 }
 
-// Add at least the first for items to the menu array
+// Add at least the first four items to the menu array
 void add_items(void)
 {
+    // I know this is tedious and boring
+    // We can also use a for loop instead, but we then have to have an array of items to iterate through
+    menu[0].item = "Burger";
+    menu[0].price = 9.5;
+    menu[1].item = "Vegan Burger"
+    menu[1].price = 11.0;
+    menu[2].item = "Hot Dog";
+    menu[2].price = 5.0;
+    menu[3].item = "Cheese Dog";
+    menu[3].price = 7.0;
+    menu[4].item = "Fries";
+    menu[4].price = 5.0;
+    menu[5].item = "Cheese Fries";
+    menu[5].price = 6.0;
+    menu[6].item = "Cold Pressed Juice"
+    menu[6].price = 7.0;
+    menu[7].item = "Cold Brew";
+    menu[7].price = 3.0;
+    menu[8].item = "Water";
+    menu[8].price = 2.0;
+    menu[9].item = "Soda";
+    menu[9].price = 2.0;
     return;
 }
 
 // Search through the menu array to find an item's cost
 float get_cost(string item)
 {
+    // Compare the item with items in the menu (case-insesitive)
+    for (int i = 0; i < NUM_ITEMS; i++)
+    {
+        if (strcasecmp(item, menu[i].item) == 0)
+        {
+            return menu[i].price;
+        }
+    }
+    printf("No such item on the menu!\n");
     return 0.0;
 }
