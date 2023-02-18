@@ -211,7 +211,7 @@ bool cycle(int winner, int loser)
         // if no cycle found
         if (!potential_loop)
         {
-            // Break condition and make sure winner != loser
+            // Break condition and (meaning no winner != loser a.k.a no cycle)
             winner = -1;
         }
     }
