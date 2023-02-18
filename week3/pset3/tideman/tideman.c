@@ -200,7 +200,8 @@ bool cycle(int winner, int loser)
         for (int i = 0; i < candidate_count; i++)
         {
             // Check whether candidate i and winner and loser create a cycle
-            if (locked[i][winner])
+            // This can only be a loop if n - 1 lines has been drawn
+            if (locked[i][winner]) 
             {
                 potential_loop = true;
                 // If there is a cycle, then there is a pair in which winner will become the loser, and loser is the winner
