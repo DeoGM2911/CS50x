@@ -194,7 +194,7 @@ bool cycle(int winner, int loser)
 {
     while ((winner != -1) && (winner != loser))
     {
-        bool potential_loop = false;
+        bool potential_loop = false; // default (noline connected between candidate i and winner)
         // Check until i is the loser's index. If i != loser, no cycle exists for the pair.
         // This if (or the cycle) only exists when at least 2 lines are drawn.
         for (int i = 0; i < candidate_count; i++)
@@ -203,7 +203,7 @@ bool cycle(int winner, int loser)
             // This can only be a loop if n - 1 lines has been drawn
             if (locked[i][winner]) 
             {
-                potential_loop = true;
+                potential_loop = true; // There is a line
                 // If there is a cycle, then there is a pair in which winner will become the loser, and loser is the winner
                 winner = i;
             }
@@ -212,10 +212,10 @@ bool cycle(int winner, int loser)
         if (!potential_loop)
         {
             // Break condition and (meaning no winner != loser a.k.a no cycle)
-            winner = -1;
-        }
+            winner = -1; // escape if a line in a loop hasn't been drawn
+        } 
     }
-    // Ignore the main diagonal (self-matchup) and create a cycle
+    // When the starting point becomes the ending point -> a closed loop
     if (winner == loser)
     {
         return true;
