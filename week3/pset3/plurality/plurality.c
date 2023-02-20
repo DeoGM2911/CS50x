@@ -68,17 +68,12 @@ int main(int argc, string argv[])
 bool vote(string name)
 {
     // Linear search as the candidate list is not sorted
-    for (int i = 0; i < MAX; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
-        // Stop the iteration at the end of the list
         if (strcasecmp(name, candidates[i].name) == 0)
         {
             candidates[i].votes++;
             return true;
-        }
-        if (candidates[i + 1].name == NULL)
-        {
-            break;
         }
     }
     return false;
@@ -89,7 +84,7 @@ void print_winner(void)
 {
     // Find the person (people) that has the highest count
     int largest;
-    for (int i = 0; i < MAX; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
         // Set default value for largest
         if (i == 0)
@@ -100,22 +95,12 @@ void print_winner(void)
         {
             largest = candidates[i].votes;
         }
-        // Stop the iteration at the end of the list
-        if (candidates[i + 1].name == NULL)
-        {
-            break;
-        }
     }
-    for (int i = 0; i < MAX; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes == largest)
         {
             printf("%s\n", candidates[i].name);
-        }
-        // Stop the iteration at the end of the list
-        if (candidates[i + 1].name == NULL)
-        {
-            break;
         }
     }
     return;
