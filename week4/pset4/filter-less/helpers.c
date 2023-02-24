@@ -68,6 +68,41 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
+// Calculate the average value for RGB
+BYTE avg_box(int i, int j, int height, int width, RGBTRIPLE copy[height][width], char c)
+{
+    int sum = 0;
+    float count = 0.0;
+    // Loop through a 3x3 box centered at (i,j)
+    for (int row = i - 1; row <= i + 1; row++)
+    {
+        for (int col = j - 1; col <= j + 1; col++)
+        {
+            // Ignore pixel not in the image
+            if (row < 0 || row > height - 1 || col < 0 || col > width - 1)
+            {
+                continue;
+            }
+            if (c == 'r')
+            {
+                sum += copy[row][col].rgbtRed;
+                count++;
+            }
+            else if (c == 'g')
+            {
+                sum += copy[row][col].rgbtGreen;
+                count++;
+            }
+            else
+            {
+                sum += copy[row][col].rgbtBlue;
+                count++;
+            }
+        }
+    }
+    return (BYTE)(round(sum / count));
+}
+
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
@@ -80,115 +115,14 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             temp[i][j] = image[i][j];
         }
     }
-    RGBTRIPLE avg;
+    // Bluring by taking average of neighbors
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            // Consider corners
-            // Top right
-            if ((i == 0) && (j == 0))
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i + 1][j].rgbtRed +
-                                     temp[i][j + 1].rgbtRed + temp[i + 1][j +  1].rgbtRed) / 4.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i + 1][j].rgbtGreen +
-                                       temp[i][j + 1].rgbtGreen + temp[i + 1][j + 1].rgbtGreen) / 4.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i + 1][j].rgbtBlue + 
-                                      temp[i][j + 1].rgbtBlue + temp[i + 1][j + 1].rgbtBlue) / 4.0);
-                image[i][j] = avg;
-            }
-            // Bottom left
-            if ((i == height - 1) && (j == width - 1))
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i - 1][j].rgbtRed + 
-                                     temp[i][j - 1].rgbtRed + temp[i - 1][j - 1].rgbtRed) / 4.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i - 1][j].rgbtGreen +
-                                       temp[i][j - 1].rgbtGreen + temp[i - 1][j - 1].rgbtGreen) / 4.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i - 1][j].rgbtBlue +
-                                      temp[i][j - 1].rgbtBlue + temp[i - 1][j - 1].rgbtBlue) / 4.0);
-                image[i][j] = avg;
-            }
-            // Bottom right 
-            if ((i == height - 1) && (j == 0))
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i - 1][j].rgbtRed + 
-                                     temp[i][j + 1].rgbtRed + temp[i - 1][j + 1].rgbtRed) / 4.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i - 1][j].rgbtGreen + 
-                                       temp[i][j + 1].rgbtGreen + temp[i - 1][j + 1].rgbtGreen) / 4.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i - 1][j].rgbtBlue + 
-                                      temp[i][j + 1].rgbtBlue + temp[i - 1][j + 1].rgbtBlue) / 4.0);
-                image[i][j] = avg;
-            }
-            // Top left 
-            if ((i == 0) && (j == width - 1))
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i + 1][j].rgbtRed + 
-                                     temp[i][j - 1].rgbtRed + temp[i + 1][j - 1].rgbtRed) / 4.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i + 1][j].rgbtGreen + 
-                                       temp[i][j - 1].rgbtGreen + temp[i + 1][j - 1].rgbtGreen) / 4.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i + 1][j].rgbtBlue + 
-                                      temp[i][j - 1].rgbtBlue + temp[i + 1][j - 1].rgbtBlue) / 4.0);
-                image[i][j] = avg;
-            }
-            // Consider side case
-            // 1st row 
-            if (i == 0)
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i][j - 1].rgbtRed + temp[i][j + 1].rgbtRed + 
-                                     temp[i + 1][j].rgbtRed + temp[i + 1][j - 1].rgbtRed + temp[i + 1][j + 1].rgbtRed) / 6.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i][j - 1].rgbtGreen + temp[i][j + 1].rgbtGreen + 
-                                       temp[i + 1][j].rgbtGreen + temp[i + 1][j - 1].rgbtGreen + temp[i + 1][j + 1].rgbtGreen) / 6.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i][j - 1].rgbtBlue + temp[i][j + 1].rgbtBlue + 
-                                      temp[i + 1][j].rgbtBlue + temp[i + 1][j - 1].rgbtBlue + temp[i + 1][j + 1].rgbtBlue) / 6.0);
-                image[i][j] = avg;
-            }
-            // 1st column
-            if (j == 0)
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i + 1][j].rgbtRed + temp[i - 1][j].rgbtRed + 
-                                     temp[i][j + 1].rgbtRed + temp[i + 1][j + 1].rgbtRed + temp[i - 1][j + 1].rgbtRed) / 6.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i + 1][j].rgbtGreen + temp[i - 1][j].rgbtGreen + 
-                                       temp[i][j + 1].rgbtGreen + temp[i + 1][j + 1].rgbtGreen + temp[i - 1][j + 1].rgbtGreen) / 6.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i + 1][j].rgbtBlue + temp[i - 1][j].rgbtBlue + 
-                                      temp[i][j + 1].rgbtBlue + temp[i + 1][j + 1].rgbtBlue + temp[i - 1][j + 1].rgbtBlue) / 6.0);
-                image[i][j] = avg;
-            }
-            // last row
-            if (i == height - 1)
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i][j - 1].rgbtRed + temp[i][j + 1].rgbtRed + 
-                                     temp[i - 1][j - 1].rgbtRed + temp[i - 1][j + 1].rgbtRed + temp[i - 1][j].rgbtRed) / 6.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i][j - 1].rgbtGreen + temp[i][j + 1].rgbtGreen + 
-                                       temp[i - 1][j - 1].rgbtGreen + temp[i - 1][j + 1].rgbtGreen + temp[i - 1][j].rgbtGreen) / 6.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i][j - 1].rgbtBlue + temp[i][j + 1].rgbtBlue + 
-                                      temp[i - 1][j - 1].rgbtBlue + temp[i - 1][j + 1].rgbtBlue + temp[i - 1][j].rgbtBlue) / 6.0);
-                image[i][j] = avg;
-            }
-            // last column
-            if (j == width - 1)
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i + 1][j].rgbtRed + temp[i - 1][j].rgbtRed +
-                                     temp[i][j - 1].rgbtRed + temp[i + 1][j - 1].rgbtRed + temp[i - 1][j - 1].rgbtRed) / 6.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i + 1][j].rgbtGreen + temp[i - 1][j].rgbtGreen + 
-                                       temp[i][j - 1].rgbtGreen + temp[i + 1][j - 1].rgbtGreen + temp[i - 1][j - 1].rgbtGreen) / 6.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i + 1][j].rgbtBlue + temp[i - 1][j].rgbtBlue + 
-                                      temp[i][j - 1].rgbtBlue + temp[i + 1][j - 1].rgbtBlue + temp[i - 1][j - 1].rgbtBlue) / 6.0);
-                image[i][j] = avg;
-            }
-            // Consider normal case
-            else
-            {
-                avg.rgbtRed = round((temp[i][j].rgbtRed + temp[i][j - 1].rgbtRed + temp[i][j + 1].rgbtRed + 
-                                     temp[i - 1][j - 1].rgbtRed + temp[i - 1][j].rgbtRed + temp[i - 1][j + 1].rgbtRed + 
-                                     temp[i + 1][j].rgbtRed + temp[i + 1][j - 1].rgbtRed + temp[i + 1][j + 1].rgbtRed) / 9.0);
-                avg.rgbtGreen = round((temp[i][j].rgbtGreen + temp[i][j - 1].rgbtGreen + temp[i][j + 1].rgbtGreen + 
-                                       temp[i - 1][j - 1].rgbtGreen + temp[i - 1][j].rgbtGreen + temp[i - 1][j + 1].rgbtGreen + 
-                                       temp[i + 1][j].rgbtGreen + temp[i + 1][j - 1].rgbtGreen + temp[i + 1][j + 1].rgbtGreen) / 9.0);
-                avg.rgbtBlue = round((temp[i][j].rgbtBlue + temp[i][j - 1].rgbtBlue + temp[i][j + 1].rgbtBlue + 
-                                      temp[i - 1][j - 1].rgbtBlue + temp[i - 1][j].rgbtBlue + temp[i - 1][j + 1].rgbtBlue + 
-                                      temp[i + 1][j].rgbtBlue + temp[i + 1][j - 1].rgbtBlue + temp[i + 1][j + 1].rgbtBlue) / 9.0);
-                image[i][j] = avg;
-            }
+            image[i][j].rgbtRed = avg_box(i, j, height, width, temp, 'r');
+            image[i][j].rgbtGreen = avg_box(i, j, height, width, temp, 'g');
+            image[i][j].rgbtBlue = avg_box(i, j, height, width, temp, 'b');
         }
     }
     return;
