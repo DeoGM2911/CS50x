@@ -57,18 +57,16 @@ BYTE avg_box(int i, int j, int height, int width, RGBTRIPLE copy[height][width],
             if (c == 'r')
             {
                 sum += copy[row][col].rgbtRed;
-                count++;
             }
             else if (c == 'g')
             {
                 sum += copy[row][col].rgbtGreen;
-                count++;
             }
             else
             {
                 sum += copy[row][col].rgbtBlue;
-                count++;
             }
+            count++;
         }
     }
     return (BYTE)(round(sum / count));
