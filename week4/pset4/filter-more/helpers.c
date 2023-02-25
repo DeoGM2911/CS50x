@@ -1,4 +1,9 @@
 #include "helpers.h"
+#include <math.h>
+
+// Initialize constants for detecting edges
+int Gx[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+int Gy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
@@ -94,8 +99,68 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
+int gxy_calc(int i, int j, int height, int width, RGBTRIPLE copy[height][width], char c)
+{
+    int sum_gx = 0;
+    int sum_gy = 0;
+    // Calculate the weighted sum
+    for (int row = i - 1; row <= i + 1; row++)
+    {
+        for (int col = j - 1; col <= j + 1; col++)
+        {
+            // Ignore pixel not in the image
+            if (row < 0 || row > height - 1 || col < 0 || col > width - 1)
+            {
+                continue;
+            }
+            // Split into 3 colors
+            if (c == 'r')
+            {
+                sum_gx += copy[row][col].rgbtRed * Gx[row + 1 - i][col + 1 - j];
+                sum_gy += copy[row][col].rgbtRed * Gy[row + 1 - i][col + 1 - j];
+            }
+            if (c == 'g')
+            {
+                sum_gx += copy[row][col].rgbtGreen * Gx[row + 1 - i][col + 1 - j];
+                sum_gy += copy[row][col].rgbtGreen * Gy[row + 1 - i][col + 1 - j];
+            }
+            if (c == 'b')
+            {
+                sum_gx += copy[row][col].rgbtBlue * Gx[row + 1 - i][col + 1 - j];
+                sum_gy += copy[row][col].rgbtBlue * Gy[row + 1 - i][col + 1 - j];
+            }
+        }
+    }
+    // Calculate the final value using sobel operation
+    int gxy = round(pow(pow(sum_gx, 2) + pow(sum_gy, 2), 0.5));
+    if (gxy > 255)
+    {
+        gxy = 255;
+    }
+    return gxy;
+}
+
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
+    // Create a copy of the image
+    RGBTRIPLE temp[height][width];
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            temp[i][j] = image[i][j];
+        }
+    }
+    // Detecting edges in the image
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j].rgbtRed = gxy_calc(i, j, height, width, temp, 'r');
+            image[i][j].rgbtGreen = gxy_calc(i, j, height, width, temp, 'g');
+            image[i][j].rgbtBlue = gxy_calc(i, j, height, width, temp, 'b');
+        }   
+    }
     return;
 }
