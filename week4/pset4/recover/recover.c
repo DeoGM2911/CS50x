@@ -4,6 +4,7 @@
 
 #define BLOCK 512
 
+// define BYTE datatype
 typedef uint8_t BYTE;
 
 int main(int argc, char *argv[])
@@ -24,38 +25,41 @@ int main(int argc, char *argv[])
     }
 
     // Read 512B at a time and restore
-    BYTE *buffer = malloc(BLOCK);
+    BYTE buffer[512];
     int i = 0;
-    while (fread(buffer, BLOCK, 1, mem_card) == BLOCK)
+    char f[8] = {0};
+    FILE *image = NULL;
+    while (fread(buffer, BLOCK, 1, mem_card) == 1)
     {
-        FILE *image = fopen(image_name(i), "w");
-        fwrite(buffer, 512, 1, image);
-        fclose(image);
-        i++;
+        // Encounter a new image -> close the old one and open a new one
+        if ((buffer[0] == 0xff) && (buffer[1] == 0xd8) && (buffer[2] == 0xff)
+            && (0xe0 <= buffer[3]) && (buffer[3] <= 0xef))
+        {
+            if (image != NULL)
+            {
+                fclose(image);
+            }
+            
+            // i++ to move on to the next file
+            sprintf(f, "%03d.jpg", i++);
+            image = fopen(f, "w");
+        }
+
+        // If not a new image, continue writing
+        if (image != NULL)
+        {
+            fwrite(buffer, BLOCK, 1, image);
+        }
     }
+
+    // Close the most recent image
+    if (image != NULL)
+    {
+        fclose(image);
+    }
+    
 
     // Avoid leaks
-    free(buffer);
     fclose(mem_card);
     return 0;
-}
-
-char *image_name(int i)
-{
-    char *s;
-    if (i < 10)
-    {
-        sprintf(s, "00%i.jpg", i);
-        return s;
-    }
-    else if ((10 <= i) && (i < 100))
-    {
-        sprintf(s, "0%i.jpg", i);
-        return s;
-    }
-    else
-    {
-        sprintf(s, "%i.jpg", i);
-        return s;
-    }
 }
