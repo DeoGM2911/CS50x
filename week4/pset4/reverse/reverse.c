@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
     // Write reversed audio to file
     BYTE buffer[BLOCK];
-    // Set the pointer to the start of the last block
+    // Set the pointer to 1 block past the last block
     fseek(infile, BLOCK, SEEK_END);
     while (ftell(infile) - BLOCK > HEADER_SIZE)
     {
