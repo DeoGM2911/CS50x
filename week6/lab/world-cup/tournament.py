@@ -28,6 +28,11 @@ def main():
     for _ in range(N):
         winner: str = simulate_tournament(teams)
         counts[winner] = counts.get(winner, 0) + 1
+        # The equivalent of:
+        #if winner in counts:
+        #   counts[winner] += 1
+        #else:
+        #   counts[winner] = 1
 
     # Print each team's chances of winning, according to simulation
     for team in sorted(counts, key=lambda team: counts[team], reverse=True):
