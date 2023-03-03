@@ -1,7 +1,11 @@
 // Implements a dictionary's functionality
 
+#include <stdio.h>
+#include <string.h>
 #include <ctype.h>
+#include <strings.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "dictionary.h"
 
@@ -14,7 +18,12 @@ typedef struct node
 node;
 
 // TODO: Choose number of buckets in hash table
-const unsigned int N = 26;
+// The number of buckets determined by 1st char, 2nd char and the length of the word
+// There are around 26 * (28 + 44) blank rows -> Acceptable (around 1 KB of memory) 
+const unsigned int N = 26 * 45 * 28;
+
+// Count words
+int count;
 
 // Hash table
 node *table[N];
@@ -23,6 +32,16 @@ node *table[N];
 bool check(const char *word)
 {
     // TODO
+    int key = hash(word);
+    node *ptr = table[key];
+    while (ptr != NULL)
+    {
+        if (strcasecmp(word, ptr->word) == 0)
+        {
+            return true;
+        }
+        ptr = ptr->next;
+    }
     return false;
 }
 
@@ -30,26 +49,88 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // TODO: Improve this hash function
-    return toupper(word[0]) - 'A';
+    int len = strlen(word);
+    int first = toupper(word[0]) - 'A';
+    int second;
+    if (isalpha(word[1]))
+    {
+        second = toupper(word[1]) - 'A' + 1;
+    }
+    else
+    {
+        // 26 means an aspotrophe, 0 means strlen == 1
+        second = (word[1] == '\0') ? 0 : 27;
+    }
+    int hashKey = ((first + 1) * 28 * 45 - 1) + (second * 45) + len;
+    return hashKey;
 }
 
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
-    // TODO
-    return false;
+    // Initialize the table
+    for (int i = 0; i < N; i++)
+    {
+        table[i] = NULL;
+    }
+    // Open dictionary
+    FILE *dict = fopen(dictionary, "r");
+    if (dict == NULL)
+    {
+        return false;
+    }
+    
+    char s[LENGTH + 1];
+    // create a new node and link to the table
+    while (fscanf(dict, "%s", s) != EOF)
+    {
+        // Create a new node
+        node *new = malloc(sizeof(node));
+        if (new == NULL)
+        {
+            return false;
+        }
+
+        strcpy(new->word, s);
+        new->next = NULL;
+        int key = hash(new->word);
+
+        // If this is the first element
+        if (table[key] == NULL)
+        {
+            table[key] = new;
+        }
+
+        // If there are existing words in this row
+        else
+        {
+            new->next = table[key];
+            table[key] = new;
+        }
+        count++;
+    }
+    fclose(dict);
+    return true;
 }
 
 // Returns number of words in dictionary if loaded, else 0 if not yet loaded
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    return count;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void)
 {
     // TODO
-    return false;
+    for (int i = 0; i < N; i++)
+    {
+        while (table[i] != NULL)
+        {
+            node *tmp = table[i]->next;
+            free(table[i]);
+            table[i] = tmp;
+        }
+    }
+    return true;
 }
