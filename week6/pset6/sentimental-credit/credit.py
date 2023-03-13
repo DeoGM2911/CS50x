@@ -25,7 +25,7 @@ def validate(card: str) -> str:
         else:
             tot += int(card[-i])
 
-    # Check the legitamacy of the card
+    # Check the legitimacy of the card
     if tot % 10 != 0:
         return "INVALID"
 
