@@ -1,0 +1,3 @@
+By executing the following SQL command:
+"SELECT AVG(energy), AVG(danceability), AVG(valence) FROM songs;" ,
+we attain the average values for energy (0.65906), danceability (0.71646), and valence (0.484443)
