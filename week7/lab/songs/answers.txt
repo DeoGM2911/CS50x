@@ -1,3 +1,13 @@
-By executing the following SQL command:
+1. By executing the following SQL command:
 "SELECT AVG(energy), AVG(danceability), AVG(valence) FROM songs;" ,
-we attain the average values for energy (0.65906), danceability (0.71646), and valence (0.484443)
+we attain the average values for:
+energy (0.65906),
+danceability (0.71646),
+and valence (0.484443)
+=> Relatively high energy and danceability => Purple, Orange
+
+2. A better way to calculate the "energetic-ness" of the song is by
+combining energy, danceability, tempo of the song.
+A way to show how the song's vibe is is by looking at loudness and valence.
+Speechiness would help us to know more about whether the song help the listener
+to focus. (Less word means more focused)
