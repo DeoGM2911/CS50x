@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+    <title>Trivia!</title>
+    <script SRC="script.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Trivia!</h1>
+    </div>
+
+    <div class="container">
+      <div class="section" >
+        <h2>Part 1: Multiple Choice</h2>
+        <hr />
+        <h3>Which programing language is most loved nowadays?</h3>
+        <button class="incorrect">Python</button>
+        <button class="incorrect">C/C++</button>
+        <button class="incorrect">Java</button>
+        <button class="correct">Rust</button>
+        <button class="incorrect">JavaScript</button>
+        <div class="response" id="res1"></div>
+      </div>
+
+      <div class="section" >
+        <h2>Part 2: Free Response</h2>
+        <hr />
+        <h3>Which country has the largest area?</h3>
+        <input id="ans" type="text"/>
+        <button class="sm" >Check Answer</button>
+        <div class="response" id="res2"></div>
+      </div>
+    </div>
+  </body>
+</html>
