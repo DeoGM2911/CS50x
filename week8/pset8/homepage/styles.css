@@ -1,0 +1,29 @@
+.homepage-intro {
+    color: #f2eaea;
+    text-align: center;
+    font-size: 250%;
+    height: fit-content;
+    background-image: url(star.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.homepage-intro:hover {
+    font-weight: 450;
+}
+
+.menu-title {
+    color: rgb(61, 50, 48);
+    font-size: 25px;
+    position: left;
+    height: fit-content;
+
+}
+.menu{
+    background-image: url(qface.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: center;
+}
+
