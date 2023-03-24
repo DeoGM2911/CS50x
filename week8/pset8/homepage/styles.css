@@ -1,29 +1,82 @@
 .homepage-intro {
     color: #f2eaea;
-    text-align: center;
-    font-size: 250%;
+    font-size: 225%;
     height: fit-content;
-    background-image: url(star.jpg);
+    background:  linear-gradient(90deg, rgba(2,0,36,1) 0%, rgb(215, 9, 2) 50%, rgb(255, 162, 0) 100%);
     background-size: cover;
     background-repeat: no-repeat;
+    display: flex;
 }
 
-.homepage-intro:hover {
-    font-weight: 450;
+#menu-item {
+    font-weight: 400;
+}
+
+#menu-item:hover {
+    font-weight: 600;
+}
+
+#intro-text {
+    font-style: italic;
 }
 
 .menu-title {
-    color: rgb(61, 50, 48);
-    font-size: 25px;
-    position: left;
+    color: rgb(232, 228, 227);
+    font-size: 100%;
+    position: relative;
     height: fit-content;
-
-}
-.menu{
-    background-image: url(qface.webp);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position-x: right;
-    background-position-y: center;
 }
 
+.doted {
+    line-break: strict;
+    color: #d3e7e7;
+}
+
+.menu {
+    background:  linear-gradient(90deg, rgba(2,0,36,1) 0%, rgb(215, 9, 2) 50%, rgb(255, 162, 0) 100%);
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: rgb(255, 255, 255);
+}
+
+.flex-container > div {
+    background-color: rgb(255, 47, 0);
+    font-weight: 340;
+    margin: 10px;
+    padding: 10px;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 20px;
+    justify-content: space-evenly;
+}
+
+.flex-container > div:hover {
+    padding: 20px;
+    background-color: rgb(253, 103, 48);
+    font-weight: 500;
+}
+
+u:hover {
+    font-weight: 800;
+}
+
+.img1 {
+    height: 50vh;
+    width: 30vw;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    display: inline-flex;
+}
+
+.img2 {
+    height: 50vh;
+    width: 70vh;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+    display: inline-flex;
+}
