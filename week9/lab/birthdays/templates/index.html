@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block body %}
+      <div class="section">
+        <hr>
+        <h2>Add a Birthday</h2>
+        <form action="/" method="post">
+          <input type="text" required autofocus name="name" placeholder="Name" />
+          <input type="number" required name="month" placeholder="Month" />
+          <input type="number" required name="day" placeholder="Day" />
+          <input type="submit" value="Add Birthday"/>
+        </form>
+        <p>
+          {% if status == "wait" %}
+            <p style="color: black; font-size: large">
+              Please fill in the fields!
+            </p>
+          {% elif status %}
+            <p style="color: green; font-size: large">
+              Successfully Added!
+            </p>
+          {% else %}
+            <p style="color: crimson; font-size: large"> 
+              Falied to add!
+            </p>
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="section">
+        <hr>
+        <h2>All Birthdays</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Birthday</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for person in people %}
+                <tr>
+                  <td>{{person["name"]}}</td>
+                  <td>{{person["day"]}}/{{person["month"]}}</td>
+                </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+{% endblock %}
