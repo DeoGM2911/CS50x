@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Symbol
+{% endblock %}
+
+{% block main %}
+    <h4>Search the stock's price of a company here.</h4>
+    <form action="/quote" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="symbol" name="symbol" placeholder="Company's qoute" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
