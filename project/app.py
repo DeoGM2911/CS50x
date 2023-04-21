@@ -310,7 +310,7 @@ def add_worker():
         year = request.form.get("year")
         month = request.form.get("month")
         day = request.form.get("day")
-        team = request.form.get("team")
+        team = request.form.get("team").title()
         
         if not is_email(email):
             return apology("You must enter your email!")
@@ -332,7 +332,7 @@ def add_worker():
         
         teams = [name["name"] for name in db.execute("SELECT name FROM teams")]
         
-        if team.title() not in teams:
+        if team not in teams:
             return apology("Not a valid team!")
 
         try:
@@ -341,13 +341,13 @@ def add_worker():
         except ValueError:
             return apology("Inappropriate birthday!")
         
-        fetch = db.execute("SELECT id, mem_count from teams WHERE name = ?", team.title())[0]
+        fetch = db.execute("SELECT id, mem_count from teams WHERE name = ?", team)[0]
         team_id, curr = fetch["id"], fetch["mem_count"]
         
         db.execute("UPDATE teams SET mem_count = ? WHERE id = ?", int(curr) + 1, team_id)
         
         db.execute("INSERT INTO workers(name, email, role, pwd_hash, team_id, birth) VALUES(?, ?, ?, ?, ?, ?)",
-                    name, email, role.title(), generate_password_hash(password), team_id, day.strftime("%d/%m/%Y"))
+                    name, email, role, generate_password_hash(password), team_id, day.strftime("%d/%m/%Y"))
         return redirect("/login")
 
     else:
@@ -418,7 +418,7 @@ def redirect_wroker():
         
         db.execute("UPDATE workers SET team_id = ?, role = ? WHERE id = ?", team_id, new_role, worker_id)
         
-        redirect("/redirect_worker")
+        return redirect("/redirect_worker")
         
     return render_template("redirect_worker.html")
     
@@ -516,6 +516,8 @@ def delegate_task():
         else:
             db.execute("""INSERT INTO work(worker_id, project_id, description, deadline, reviewer_id, partner_id)
                     VALUES(?, ?, ?, ?, ?, NULL)""", worker_id, project_id, info, deadline, session["user_id"])
+            
+        return redirect("/delegate_task")
         
     return render_template("delegate_task.html")
         
@@ -578,15 +580,19 @@ def delete_project():
         if not (name := request.form.get("name").title()):
             return apology("No project's name found!")
         
-        if len(db.execute("SELECT id FROM projects WHERE name = ?", name)) == 0:
+        if len(project_id := db.execute("SELECT id FROM projects WHERE name = ?", name)) == 0:
             return apology("No such project found!")
         
         if (request.form.get("confirm") == "no"):
             return apology("Action canceled!")
         
+        db.execute("DELETE FROM work WHERE project_id = ?", project_id)
+        db.execute("DELETE FROM in_meetings WHERE project_id = ?", project_id)
+        db.execute("DELETE FROM busi_meetings WHERE project_id = ?", project_id)
         db.execute("DELETE FROM projects WHERE name = ?", name)
         
         return redirect("/create_project")
+    
     else:
         return redirect("/create_project")
 
