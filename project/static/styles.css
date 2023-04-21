@@ -1,0 +1,315 @@
+body {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    background-image: linear-gradient(180deg, white, lightgreen) ;
+    position: relative;
+    overflow: auto;
+}
+
+nav {
+    background-color: rgb(239, 239, 238);
+    position: relative;
+    transition-duration: 0.5s;
+    background-image: linear-gradient(to right, lightblue, cyan, lightgreen);
+    transition: all 250ms ease-in-out;
+    border: 1px solid black;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
+.dot {
+    height: 2px;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.flex-container > div {
+    background-image: linear-gradient(90deg, tomato, rgb(255, 90, 90), rgb(237, 119, 143));
+    color: rgb(55, 66, 83);
+    font-family: "Ubuntu";
+    font-weight: 500;
+    font-style: italic;
+    padding: 10px;
+    border: transparent;
+    margin: 10px;
+}
+
+.happy-birthday {
+    color: rgb(117, 234, 117);
+    transition: all 300ms ease;
+    padding: 10px;
+    margin: 20px;
+    font-size: large;
+    justify-content: center;
+    position: relative;
+    transition: all 300ms ease;
+}
+
+.happy-birthday:hover {
+    transform: scale(1.05);
+    background-image: linear-gradient(90deg, white 0%, green 50%, white 100%);
+}
+
+.happy-birthday::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    height: 3px;
+    width: max-content;
+    transform: scaleX(0);
+    transition: all 300ms ease;
+}
+
+.happy-birthday:hover::after {
+    transform: sacleX(1);
+}
+
+
+
+.hello {
+    color: rgb(58, 33, 68);
+    background-color: rgb(181, 238, 203);
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    border-radius: 50px;
+    top: 20px;
+    left: 10px;
+    font-size: large;
+    font-style: italic;
+    font-family: 'Ubuntu';
+}
+
+.reminder {
+    color: tomato;
+    font-size: large;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.container {
+    display: grid !important;
+}
+
+.info {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    justify-content: space-evenly;
+    margin: 20px;
+    padding: 10px;
+}
+
+.img-box {
+    background-color: white;
+    border: 1px solid black;
+    height: 40vh;
+    aspect-ratio: 0.75;
+    overflow: hidden;
+    transition: all 500ms ease;
+    justify-content: center;
+    position: relative;
+    margin: 10px;
+}
+
+.img-box > img {
+    background-size: contain;
+    background-repeat: no-repeat;
+    object-position: center;
+    object-fit: scale-down;
+    height: 100%;
+    width: 100%;
+}
+
+.img-box:hover {
+    transform: scale(1.05);
+    border: 2px solid black;
+}
+
+.profile-card {
+    background-color: white;
+    border: 1px solid black;
+    height: 40vh;
+    block-size: contain;
+    position: relative;
+    aspect-ratio: 2;
+    transition: all 500ms ease;
+    justify-content: left;
+    padding: 5px;
+    margin: 10px;
+    background-image: linear-gradient(180deg, white 0%, rgb(224, 224, 224) 70%, rgb(146, 146, 146) 100%);
+}
+
+.profile-card:hover {
+    transform: scale(1.05);
+}
+
+.profile-card > p {
+    z-index: 1;
+    text-align: left;
+    font-family: "Ubuntu";
+    font-size: medium;
+    color: #2b2b2b;
+    position: relative;
+    overflow: hidden;
+    padding: 1px;
+    width: max-content;
+}
+
+.nav-item::after, .profile-card > p::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 110%;
+    bottom: 0em;
+    left: 0em;
+    background: green;
+    transform: scaleX(0);
+    transition: transform 500ms ease;
+    transform-origin: left;
+}
+
+.nav-item:hover::after, .profile-card > p:hover::after {
+    transform: scaleX(1);
+}
+
+#logo {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+    height: 50%;
+    aspect-ratio: 1;
+    z-index: 0;
+}
+
+form {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#team_name, #team_leader, #team_leader_email {
+    padding: 5px;
+    margin: 20px;
+    transition: all 400ms ease;
+}
+
+#team_name:focus, #team_leader:focus, #team_leader_email:focus {
+    border: 1px solid green;
+    transform: scale(1.05);
+}
+
+#sub-btn {
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+    border: 1px solid green;
+}
+
+.confirmation {
+    justify-content: center;
+}
+
+.meeting {
+    margin-bottom: 20px;
+}
+
+.meeting > p {
+    text-align: center;
+    font-size: large;
+    color: green;
+    font-weight: 500;
+    transition: all 400ms ease;
+}
+
+.meeting > p:hover {
+    transform: scale(1.05);
+}
+
+.meeting > form > input {
+    transition: all 400ms ease;
+    margin: 10px;
+}
+
+.meeting > form > input:hover {
+    border: 1px solid green;
+    transform: scale(1.05);
+}
+
+#meet > label {
+    font-size: large;
+    font-weight: 600;
+}
+
+.img-form {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.img-form > p {
+    font-size: large;
+    font-weight: 500;
+    align-items: center;
+}
+
+#profile_image {
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 400ms ease;
+    transform: scale(1.2);
+    width: fit-content;
+}
+
+.img-form > #sub-img {
+    padding: 5px;
+    border-radius: 5px;
+    transform: scale(1.2);
+}
+
+.inp {
+    margin: 10px;
+}
+
+.description {
+    overflow: auto;
+    margin: 10px;
+    aspect-ratio: 4;
+    width: 35%;
+}
+
+.btn-submit {
+    border: 1px green solid;
+    font-weight: 600;
+    transition: all 400ms ease;
+    margin: 10px;
+    padding: 5px;
+}
+
+.btn-submit:hover {
+    transform: scale(1.05);
+}
+
+#name-re, #email-re, #current_team-re, #new_team-re, #new_role-re {
+    margin: 10px;
+    border: transparent;
+    transition: all 400ms ease;
+}
+
+#name-re:focus, #email-re:focus, #current_team-re:focus, #new_team-re:focus, #new_role-re:focus {
+    transform: scale(1.05);
+}
+
+.text-area {
+    width: 40%;
+    aspect-ratio: 4;
+    margin: 10px;
+    padding: 5px;
+}

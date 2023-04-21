@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Projects
+{% endblock %}
+
+{% block main %}
+    <p style="font-size: large; color: black;">Create a project:</p>
+    <div class="text-center reminder">
+        <p>Please carefully Fill in the fields to CREATE a project!</p>
+    </div>
+    <form action="/create_project" method="post">
+        <input type="text" id="name" name="name" placeholder="Project's name" autofocus autocomplete="off">
+        <input type="text" id="partner" name="partner" placeholder="Partner's name" autocomplete="off">
+        <div class="confirmation">
+            <p>Please comfirm the deletion of the team:</p>
+            <div class="form-check form-check-inline">
+                <input type="radio" name="confirm" id="yes" value="yes">
+                <label for="yes">Yes</label>
+                <input type="radio" name="confirm" id="no" value="no">
+                <label for="no">No</label>
+            </div>    
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <p style="font-size: large; color: black;">Delete a project:</p>
+    <div class="text-center reminder">
+        <p>Please carefully Fill in the fields to DELETE a project!</p>
+    </div>
+    <form action="/delete_project" method="post">
+        <input type="text" id="name" name="name" placeholder="Project's name" autofocus autocomplete="off">
+        <div class="confirmation">
+            <p>Please comfirm the deletion of the team:</p>
+            <div class="form-check form-check-inline">
+                <input type="radio" name="confirm" id="yes" value="yes">
+                <label for="yes">Yes</label>
+                <input type="radio" name="confirm" id="no" value="no">
+                <label for="no">No</label>
+            </div>    
+        </div>
+        <button type="submit" class="btn btn-primary">Delete</button>
+    </form>
+    <hr>
+    <table class="table table-striped table-bordered table-hover">
+        <caption style="font-size:large; padding: 5px; margin:10px;">Projects</caption>
+        <thead>
+            <th scope="col">No.</th>
+            <th scope="col">Project</th>
+            <th scope="col">Partner</th>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ project["name"] }}</td>
+                <td>{{ project["partner"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

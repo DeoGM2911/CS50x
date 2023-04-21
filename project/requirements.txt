@@ -1,0 +1,6 @@
+os
+cs50
+Flask
+validator_collection
+datetime
+werkzeug

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Pending Work
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p>Add work here!</p>
+        <form action="/work" method="post" id="add-work">
+            <input type="text" name="project" autofocus autocomplete="off" class="inp form-control mx-auto w-auto" placeholder="Project's name">
+            <input type="text" name="deadline" autocomplete="off" class="inp form-control mx-auto w-auto" placeholder="Deadline">
+            <label for="reviewer">You can skip reviewer and his/her email and/or the partner field.</label>
+            <input type="text" name="reviewer" autocomplete="off" class="inp form-control mx-auto w-auto" placeholder="Reviewer">
+            <input type="text" name="reviewer_email" autocomplete="off" class="inp form-control mx-auto w-auto" placeholder="Reviewer's email">
+            <input type="text" name="partner" autocomplete="off" class="inp form-control mx-auto w-auto" placeholder="Partner">
+            <label for="info">Description:</label><br>
+            <textarea type="text" name="info" id="info" autocomplete="off" class="description" form="add-work" placeholder="Enter details here...."></textarea>
+            <input type="submit" value="Add">
+        </form>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+        <caption>Pending Work</caption>
+        <thead class="thead-light">
+            <th scope="col">No.</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Project</th>
+            <th scope="col">Description</th>
+            <th scope="col">Reviewer</th>
+            <th scope="col">Reviewer's email</th>
+            <th scope="col">Partner</th>
+            <th scope="col">Delete Work</th>
+        </thead>
+        <tbody>
+            {% for work in works %}
+                <!-- * Add decoration with Bootstrap-->
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ work[1]["deadline"] }}</td>
+                    <td>{{ work[1]["project"] }}</td>
+                    <td>{{ work[1]["description"] }}</td>
+                    <td>{{ work[1]["reviewer"] }}</td>
+                    <td>{{ work[1]["email"] }}</td>
+                    <td>{{ work[1]["partner"] }}</td>
+                    <td>
+                        <form action="/delete_work" method="post">
+                            <input type="text" name="id" value="{{ work[0] }}" style="visibility: hidden; height: 0rem; width: 0rem;">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div class="mb-5 text-center hello">
+    Welcome!<br>A new day is waiting for ya!
+</div>
+<p class="reminder mb-5">Notice: Don't share your password with anyone!</p>
+<div class="text-center reminder">
+    <p>Please remember to CHECK IN and CHECK OUT before working!</p>
+</div>
+    <form action="/login" method="post">
+        <div class="mb-3">
+            <input type="text" name="email" id="email" placeholder="Email" autocomplete="off" autofocus class="form-control mx-auto w-auto">
+        </div>
+        <div class="mb-3">
+            <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" autofocus class="form-control mx-auto w-auto">
+        </div>
+        <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+    <hr class="dot">
+    <div class="flex-container">
+        <div>
+            Remember to drink enough water!
+        </div>
+        <div>
+            Random Company LTD. hopes you a great day!
+        </div>
+        <div>
+            Stay happy and healthy!
+        </div>
+    </div>
+{% endblock %}

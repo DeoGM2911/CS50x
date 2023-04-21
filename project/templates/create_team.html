@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create New Team
+{% endblock %}
+
+{% block main %}
+    <div>
+        <div class="text-center reminder">
+            <p>Please carefully CONSIDER before create a team and choose a leader!</p>
+        </div>
+        <form action="/create_team" method="post">
+            <input type="text" id="team_name" required name="team_name" class="form-control mx-auto w-auto" autofocus autocomplete="off" placeholder="New team's name">
+            <input type="text" id="team_leader" name="team_leader" class="form-control mx-auto w-auto" autocomplete="off" required placeholder="New team's leader">
+            <input type="text" id="team_leader_email" name="team_leader_email" class="form-control mx-auto w-auto" autocomplete="off" required placeholder="New leader's email">
+            <div class="confirmation">
+                <p>Please comfirm the creation of the team:</p>
+                <div class="form-check form-check-inline">
+                    <input type="radio" name="confirm" id="yes" value="yes">
+                    <label for="yes">Yes</label>
+                    <input type="radio" name="confirm" id="no" value="no">
+                    <label for="no">No</label>
+                </div>
+            </div>
+            <input type="submit" id="sub-btn" value="Create">
+        </form>
+    </div>
+{% endblock%}

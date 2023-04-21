@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    In-company Meetings
+{% endblock %}
+
+{% block main %}
+    <div class="meeting">
+        <p>Add a meeting here (Please be aware of whitespaces!)</p>
+        <form action="/in_meeting" method="post">
+            <input type="text" id="day" name="day" placeholder="Date" class="form-control mx-auto w-auto" autocomplete="off" autofocus>
+            <label for="day">Format: DD/MM/YYYY</label>
+            <input type="text" id="hour" name="hour" placeholder="Hour" class="form-control mx-auto w-auto" autocomplete="off">
+            <label for="hour">Format: Hour:Minute (Hour ranges from 0-24; Minute ranges from 0-59. Eg: 9:05)</label>
+            <input type="text" id="project" name="project" placeholder="Project's name" class="form-control mx-auto w-auto" autocomplete="off">
+            <input type="text" id="dest" name="dest" placeholder="Destination" class="form-control mx-auto w-auto" autocomplete="off">
+            <textarea type="text" id="info-c" name="info" placeholder="Content" class="text-area" autocomplete="off"></textarea>
+            <input type="submit" id="sub-btn" value="Add">
+        </form>
+    </div>
+    <table class="table table-striped table-bordered table-hover border-dark" id="meet">
+        <label for="in-meet">In-company Meetings</label>
+        <thead class="thead-light">
+            <th scope="col">No.</th>
+            <th scope="col">Time</th>
+            <th scope="col">Project</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Information</th>
+            <th scope="col">Delete meeting</th>
+        </thead>
+        <tbody>
+            {% for meeting in in_meetings %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ meeting[1]["time"] }}</td>
+                    <td>{{ meeting[1]["project"] }}</td>
+                    <td>{{ meeting[1]["dest"] }}</td>
+                    <td>{{ meeting[1]["info"] }}</td>
+                    <td>
+                        <form action="/delete_in_meet" method="post">
+                            <input type="text" name="id" style="visibility: hidden; height: 0rem; width: 0rem;" value="{{ meeting[0] }}">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

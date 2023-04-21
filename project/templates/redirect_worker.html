@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Redirect a Worker
+{% endblock %}
+
+{% block main %}
+    <div class="text-center reminder">
+        <p>Please carefully CONSIDER before redirect a worker!</p>
+    </div>
+    <form action="/redirect_worker" method="post">
+        <input type="text" id="name-re" name="name" class="form-control mx-auto w-auto" placeholder="Name" autofocus autocomplete="off">
+        <input type="text" id="email-re" name="email" class="form-control mx-auto w-auto" placeholder="Email" autofocus autocomplete="off">
+        <input type="text" id="current_team-re" name="current_team" class="form-control mx-auto w-auto" placeholder="Current Team" autofocus autocomplete="off">
+        <input type="text" id="new_team-re" name="new_team" class="form-control mx-auto w-auto" placeholder="New Team" autofocus autocomplete="off">
+        <input type="text" id="new_role-re" name="new_role" class="form-control mx-auto w-auto" placeholder="New Role" autofocus autocomplete="off">
+        <button type="submit" class="btn-submit">Redirect</button>
+    </form>
+{% endblock %}

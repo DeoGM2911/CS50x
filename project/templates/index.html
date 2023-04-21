@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Page
+{% endblock %}
+
+{% block main %}
+    {% if birthday %}
+        <div class="happy-birthday">
+            Happy birthday to you!!!!
+        </div>
+    {% endif %}
+    <div class="text-center reminder">
+        <p>Please remember to CHECK IN and CHECK OUT before working!</p>
+    </div>
+    <div class="info">
+        <div class="img-box">
+            <img src="{{ img }}" class="img" alt="Profile Picture">
+        </div>
+        <div class="profile-card">
+            <p>Name: {{ name }}</p>
+            <p>Date of birth (day/month/year): {{ birth }}</p>
+            <p>Team: {{ team }}</p>
+            <p>Role: {{ role }}</p>
+            <p>Email: {{ email }}</p>
+            <img src="../static/logo.svg" alt="Random Company" id="logo">
+        </div>
+    </div>
+    <div class="img-form">
+        <p>Change your image:</p>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" id="profile_image" name="imgprof">
+            <br>
+            <input type="submit" value="Change" id="sub-img">
+        </form>
+    </div>
+{% endblock %}

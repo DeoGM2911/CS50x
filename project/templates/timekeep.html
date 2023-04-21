@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Time Keeping
+{% endblock %}
+
+{% block main %}
+    <div class="text-center reminder">
+        <p>Please remember to CHECK IN and CHECK OUT before working!</p>
+        <p>You can hit start only once but you can hit end multiple time to keep track of the total work time!</p>
+    </div>
+    <form action="/time_keep" method="post">
+        <label for="start">Start working: </label>
+        <input type="submit" name="timekeep" id="start" value="start" class="btn btn-primary">
+        <hr>
+        <label for="end">End working: </label>
+        <input type="submit" name="timekeep" id="end" value="end" class="btn btn-primary">
+    </form>
+    <table class="table table-striped table-bordered table-hover" id="time_keep_table">
+        <label for="time_keep_table">Time Keeping</label>
+        <thead class="thead-light">
+            <th scope="col">No.</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time in</th>
+            <th scope="col">Time out</th>
+            <th scope="col">Working time</th>
+        </thead>
+        <tbody>
+            {% for day in time_keeping %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ day["date"] }}</td>
+                    <td>{{ day["time_in"] }}</td>
+                    <td>{{ day["time_out"] }}</td>
+                    <td>{{ day["work_time"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

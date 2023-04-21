@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delegate Tasks
+{% endblock %}
+
+{% block main %}
+    <form action="/delegate_task" method="post" id="delegate">
+        <label for="name">Worker's name:</label>
+        <input type="text" name="name" id="name" placeholder="Name" class="form-control mx-auto w-auto" autocomplete="off" autofocus>
+        <label for="email">Worker's email:</label>
+        <input type="text" name="email" id="email" placeholder="Email" class="form-control mx-auto w-auto" autocomplete="off">
+        <label for="project">Project's name:</label>
+        <input type="text" name="project" id="project" placeholder="Project" class="form-control mx-auto w-auto" autocomplete="off">
+        <label for="info">Deadline (Format: DD/MM/YYYY):</label>
+        <input type="text" name="deadline" id="deadline" placeholder="Deadline" class="form-control mx-auto w-auto" autocomplete="off">
+        <label for="partner">Partner:</label>
+        <input type="text" name="partner" id="partner" placeholder="Partner" class="form-control mx-auto w-auto" autocomplete="off">
+        <label for="info">Description:</label>
+        <textarea form="delegate" name="info" style="margin-top: 10px;" id="info" placeholder="Description" autocomplete="off"></textarea>
+        <input type="submit" id="sub-btn" value="Add task">
+    </form>
+{% endblock %}
