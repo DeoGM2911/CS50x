@@ -10,7 +10,7 @@ CREATE TABLE workers (
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     pwd_hash TEXT NOT NULL,
-    team_id INTEGER NOT NULL,
+    team_id INTEGER,
     birth NUMERIC NOT NULL,
     role TEXT NOT NULL,
     PRIMARY KEY(id),

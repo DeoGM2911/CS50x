@@ -186,7 +186,7 @@ def register():
         
         db.execute("INSERT INTO workers(name, email, role, pwd_hash, team_id, birth) VALUES(?, ?, ?, ?, ?, ?)",
                     name, email, role.title(), generate_password_hash(password), team_id, day.strftime("%d/%m/%Y"))
-        return redirect("/login")
+        return redirect("/")
 
     else:
         return render_template("register.html")
@@ -348,7 +348,7 @@ def add_worker():
         
         db.execute("INSERT INTO workers(name, email, role, pwd_hash, team_id, birth) VALUES(?, ?, ?, ?, ?, ?)",
                     name, email, role, generate_password_hash(password), team_id, day.strftime("%d/%m/%Y"))
-        return redirect("/login")
+        return redirect("/")
 
     else:
         return render_template("register.html")
