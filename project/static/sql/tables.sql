@@ -11,7 +11,7 @@ CREATE TABLE workers (
     email TEXT NOT NULL UNIQUE,
     pwd_hash TEXT NOT NULL,
     team_id INTEGER,
-    birth NUMERIC NOT NULL,
+    birth TEXT NOT NULL,
     role TEXT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(team_id) REFERENCES teams(id)
@@ -28,7 +28,7 @@ CREATE TABLE work (
     worker_id INTEGER,
     project_id INTEGER,
     description TEXT NOT NULL,
-    deadline NUMERIC NOT NULL,
+    deadline TEXT NOT NULL,
     reviewer_id INTEGER,
     partner_id INTEGER,
     PRIMARY KEY(id),
@@ -47,7 +47,7 @@ CREATE TABLE partners (
 CREATE TABLE projects (
     id INTEGER,
     name TEXT NOT NULL UNIQUE,
-    partner_id INTEGER, 
+    partner_id INTEGER,
     PRIMARY KEY(id),
     FOREIGN KEY(partner_id) REFERENCES partners(id)
 );
@@ -55,8 +55,8 @@ CREATE TABLE projects (
 CREATE TABLE timekeep (
     worker_id INTEGER,
     date TEXT NOT NULL,
-    time_in NUMERIC,
-    time_out NUMERIC,
+    time_in TEXT,
+    time_out TEXT,
     work_time REAL,
     FOREIGN KEY(worker_id) REFERENCES workers(id)
 );
@@ -67,7 +67,7 @@ CREATE TABLE in_meetings (
     worker_id INTEGER,
     project_id INTEGER,
     info TEXT NOT NULL,
-    time NUMERIC NOT NULL,
+    time TEXT NOT NULL,
     destination TEXT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(worker_id) REFERENCES workers(id),
@@ -81,7 +81,7 @@ CREATE TABLE busi_meetings (
     partner_id INTEGER,
     project_id INTEGER,
     info NOT NULL,
-    time NUMERIC NOT NULL,
+    time TEXT NOT NULL,
     destination TEXT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(worker_id) REFERENCES workers(id),
