@@ -13,6 +13,8 @@
 
 ### 2.2 **Details about the application**
 
+- All the configuration below is important to create a Flask application. This is only a developmental applicaition (not a WSGI)
+
 - Configure the application
 
 ```Python
@@ -42,7 +44,9 @@ def after_request(response):
     return response
 ```
 
-- Database schema:
+- Database schema: teams, workers, imgs, work, partners, projects, timekeep, in_meetings, and busi_meetings (or out_meetings for better understanding)
+
+- For any one who wants to add a chat box, simply add a new table (like chat_messages for instance). In such a table, we need a sender_id, receiver_id, content, and datetime.
 
 ```SQL
 CREATE TABLE teams (
@@ -312,7 +316,7 @@ if image and allowed_file(image.filename):
 
 #### 2. Register, add worker, redirect worker, and sack
 
-#### a. Register
+#### a. Register (route: /register)
 
 - Register is a feature that's only for the Admin. This functionality is used for developmental phase to add workers easily. It requires the admin to add basic information about the added worker, then verify the data, and insert them into the database.
 
@@ -340,11 +344,11 @@ if request.method == "POST":
   return redirect("/login")
 ```
 
-#### b. Add worker
+#### b. Add worker (route: /add_worker)
 
 - This feature is *EXACTLY* the same as register, however, this is created for roles such as Team leaders and executives.
 
-#### c. Redirect worker
+#### c. Redirect worker (route: /redirect_worker)
 
 - This route help team leaders and executives to change the team that a worker is working in. It requires the name, email, the current and the new team of the worker. Then the data is validated and the database is updated. The member count of each team is also updated along with the worker's team_id.
 
@@ -361,7 +365,7 @@ db.execute("""UPDATE teams
 db.execute("UPDATE workers SET team_id = ?, role = ? WHERE id = ?", team_id, new_role, worker_id)
 ```
 
-#### c. Sack
+#### c. Sack (route: /sack)
 
 - Sack allows managers and leaders to sack a member in a team provided the name and email of the worker. Sack will delete any information about the user in the database and update the member count in the team that the sacked member used to work in.
 
@@ -381,7 +385,7 @@ db.execute("DELETE FROM workers WHERE id = ?", worker_id)
 
 #### 3. Create and delete project, create and delete team, delegate tasks, and work and delete work
 
-#### a. Create and delete project
+#### a. Create and delete project (routes: /create_project, /delete_project)
 
 - These features are only for executives roles. When creating a project name is prompted and the user can optionally add a partner for that project. While deleting one, the project name is needed and all information about that project (in projects, work, in_meetings, and busi_meetings tables).
 
@@ -441,7 +445,7 @@ return render_template("project.html", projects=projects)
 </table>
 ```
 
-#### b. Create and delete team
+#### b. Create and delete team (routes: /create_team, /delete_team)
 
 - This functionality allows executives to create and delete a team. It requires the user to input the team name and the team leader (who must already be in the company) when creating a team, and the team name when deleting. Notice: when deleting a team, all member in that team will belong to NO team; therefore, it's recommended to sack the member then add them back with a whole new account on a new team.
 
@@ -474,9 +478,9 @@ db.execute("UPDATE workers SET team_id = NULL WHERE team_id = ?", team_id)
 db.execute("DELETE FROM teams WHERE id = ?", team_id)
 ```
 
-#### c. Delegate tasks
+#### c. Delegate tasks (route: /delegate_task)
 
-- This feature allow ALL users to add work to other counterparts.
+- This feature allow ALL users to add work to other counterparts. The work displayed to the assigned person will automatically show the reviewer as the person who delegate the task.
 
 - The HTML form includes a \<textarea> that helps with multiple lines description from the user.
 
@@ -507,10 +511,123 @@ else:
           VALUES(?, ?, ?, ?, ?, NULL)""", worker_id, project_id, info, deadline, session["user_id"])
 ```
 
-#### d. Work and delete work
+#### d. Work and delete work (route: /work, /delete_work)
+
+- This route provides the user with a table that list all the pending work and the deadline from the closest one. On top of that, users are allowed to add their own work into the table and directly delect (via POST to /delete_work) one by pushing a button right next to each work (a row).
+
+- The work can optionally have a reviewer and a partner, depending on who adds or delegates the task.
+
+- Notice: The form send to work (which is to add the work) requires that the work must belong to a project! This means that NO personal stuff should be stored here!
+
+```Python
+# Display pending work
+works = []
+work = db.execute("SELECT * FROM work WHERE worker_id = ?", session["user_id"])
+
+for item in work:
+    # Query from database
+    ...
+
+    project = db.execute("SELECT name FROM projects WHERE id = ?", item["project_id"])[0]["name"]
+    
+    works.append([ item["id"], 
+        {"reviewer": reviewer,
+        "email": re_email,
+        "project": project,
+        "partner": partner,
+        "description": item["description"],
+        "deadline": item["deadline"]
+        }])
+    # Let the closest deadline pop up first 
+    works = sorted(works, key=lambda data: datetime.strptime(data[1]["deadline"], "%d/%m/%Y"), reverse=False)
+return render_template("work.html", works=works)
+
+# The delete_work route
+@app.route("/delete_work", methods=["POST"])
+@login_required
+def delete_work():
+    work_id = request.form.get("id")
+    db.execute("DELETE FROM work WHERE id = ?", work_id)
+    
+    return redirect("/work")
+```
 
 #### 4. In and Outside meetings
 
-#### a. In meetings
+#### a. In meetings (route: /in_meeting and /delete_in_meet)
+
+- This functionality helps user store information about their in-company meetings. The items in the table displayed to the user are sorted chronologically (the closest meeting will be displayed first).
+
+```Python
+# Display a table about in-company meetings
+        in_meetings = []
+        in_meets = db.execute("SELECT * FROM in_meetings WHERE worker_id = ?", session["user_id"])
+        for item in in_meets:
+            if datetime.strptime(item["time"], "%d/%m/%Y, %H:%M") < datetime.now():
+                continue
+            
+            project = db.execute("SELECT name FROM projects WHERE id = ?", item["project_id"])[0]["name"]
+            in_meetings.append([item["id"],
+                {"project": project,
+                "info": item["info"],
+                "time": item["time"],
+                "dest": item["destination"]
+                }])    
+        in_meetings = sorted(in_meetings, key=lambda data: datetime.strptime(data[1]["time"], "%d/%m/%Y, %H:%M"), reverse=False)
+        return render_template("in_meeting.html", in_meetings=in_meetings)
+
+# To delete meeting
+@app.route("/delete_in_meet", methods=["POST"])
+@login_required
+def delete_in_meet():
+    meet_id = request.form.get("id")
+    db.execute("DELETE FROM in_meetings WHERE id = ?", meet_id)
+    
+    return redirect("/in_meeting")
+```
+
+- The user can also actively add meetings to their list. All meetings that are not happened yet will be displayed.
+
+```HTML
+<form action="/in_meeting" method="post">
+    <input type="text" id="day" name="day" placeholder="Date" class="form-control mx-auto w-auto" autocomplete="off" autofocus>
+    <label for="day">Format: DD/MM/YYYY</label>
+    <input type="text" id="hour" name="hour" placeholder="Hour" class="form-control mx-auto w-auto" autocomplete="off">
+    <label for="hour">Format: Hour:Minute (Hour ranges from 0-24; Minute ranges from 0-59. Eg: 9:05)</label>
+    <input type="text" id="project" name="project" placeholder="Project's name" class="form-control mx-auto w-auto" autocomplete="off">
+    <input type="text" id="dest" name="dest" placeholder="Destination" class="form-control mx-auto w-auto" autocomplete="off">
+    <textarea type="text" id="info-c" name="info" placeholder="Content" class="text-area" autocomplete="off"></textarea>
+    <input type="submit" id="sub-btn" value="Add">
+</form>
+
+<!-- For deletion -->
+<td>
+    <form action="/delete_in_meet" method="post">
+        <input type="text" name="id" style="visibility: hidden; height: 0rem; width: 0rem;" value="{{ meeting[0] }}">
+        <input type="submit" value="Delete">
+    </form>
+</td>
+```
+
+- User can delete a meeting by clicking the delete button in the last column.
 
 #### b. Outside meetings
+
+- The same as in_meeting; however, the user is propmted to optionally add a partner relating to the meeting.
+
+```Python
+if partner:
+    if len(partnr := db.execute("SELECT id FROM partners WHERE name = ?", partner)) == 0:
+        return apology(f"No partner named {partner} is found")
+    partner_id = partnr[0]["id"]
+```
+
+- Here "partner" is a variable indicate whether the user has inputed a partner.
+
+- /out_meeting also support deletion of a meeting via POST to /delete_out_meet, which is implemented exactly like /delete_in_meet.
+
+**Remarks 1: This project is a simplified version of a complicated system in a company. In reality, there are a lot of teams and professions. In this project, a "Tech team" would represent any teams that don't relate to human management.*  
+**Remarks 2: On top of this mmodel, I would also wish to add new features like a chat box so that you can share files or text with other users. However, I believe I still need to improve more and learn more beyond CS50x.*  
+<div align="center"><i>Thank you for reading this documentation!</i></div>
+
+***

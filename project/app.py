@@ -671,6 +671,8 @@ def work():
         work = db.execute("SELECT * FROM work WHERE worker_id = ?", session["user_id"])
         
         for item in work:
+            if datetime.strptime(item["deadline"], "%d/%m/%Y") < datetime.now():
+                continue
             if len(fetch1 := db.execute("SELECT name, email FROM workers WHERE workers.id = ?", item["reviewer_id"])) == 0:
                 reviewer, re_email = "None", "None"
             else:
@@ -742,6 +744,9 @@ def in_meeting():
         
         in_meets = db.execute("SELECT * FROM in_meetings WHERE worker_id = ?", session["user_id"])
         for item in in_meets:
+            if datetime.strptime(item["time"], "%d/%m/%Y, %H:%M") < datetime.now():
+                continue
+            
             project = db.execute("SELECT name FROM projects WHERE id = ?", item["project_id"])[0]["name"]
             
             in_meetings.append([item["id"],
@@ -810,6 +815,10 @@ def out_meeting():
         
         out_meets = db.execute("SELECT * FROM busi_meetings WHERE worker_id = ?", session["user_id"])
         for item in out_meets:
+            
+            if datetime.strptime(item["deadline"], "%d/%m/%Y, %H:%M") < datetime.now():
+                continue
+            
             project = db.execute("SELECT name FROM projects WHERE id = ?", item["project_id"])[0]["name"]
             if item["partner_id"]:
                 partner = db.execute("SELECT name FROM partners WHERE id = ?", item["partner_id"])[0]["name"]
@@ -846,7 +855,7 @@ def timekeep():
         mark = request.form.get("timekeep")
         now = datetime.now()
         date, time = datetime.strftime(now, "%Y/%m/%d"), datetime.strftime(now, "%H:%M:%S")
-        if mark == "start":
+        if mark == "start": 
             if len(db.execute("SELECT time_in FROM timekeep WHERE worker_id = ? AND date = ?",
                                 session["user_id"], date)) != 0:
                 return apology("You can only hit start once every day!")
