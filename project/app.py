@@ -236,7 +236,7 @@ def create_team():
         if not team_name.startswith("Tech") and not team_name.startswith("Hr") and not team_name.startswith("Executives"):
             return apology("Not a valid team name (either starts with Tech, HR, or Executives)!")
         
-        if len(db.execute("SELECT id FROM teams WHERE name = ?", team_name) != 0):
+        if len(db.execute("SELECT id FROM teams WHERE name = ?", team_name)) != 0:
             return apology("A team with that name already exists!")
         
         # Check if the leader is actually in the company
@@ -580,8 +580,9 @@ def delete_project():
         if not (name := request.form.get("name").title()):
             return apology("No project's name found!")
         
-        if len(project_id := db.execute("SELECT id FROM projects WHERE name = ?", name)) == 0:
+        if len(projct_id := db.execute("SELECT id FROM projects WHERE name = ?", name)) == 0:
             return apology("No such project found!")
+        project_id = projct_id[0]["id"]
         
         if (request.form.get("confirm") == "no"):
             return apology("Action canceled!")
