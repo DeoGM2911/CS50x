@@ -6,7 +6,7 @@
 
 ### 2.1 **Overview**
 
-- Adminine (or Admin Online) is a web-based application aim to porvide some flexibility to work with some major features such as adding and viewing pending work, meetings in or outside the company, etc.. For each role in the model, there is specific duties or abilities that they have.
+- Adminine (or Admin Online) is a web-based application aim to provide some flexibility to work with some major features such as adding and viewing pending work, meetings in or outside the company, etc.. For each role in the model, there is specific duties or abilities that they have.
 - This project is based on a simple model of a company with CEOs and Directors in the Executives team, Technical Leaders and Workers (Tech Lead and Worker) in Technical team (Tech), and Human Resource (HR) Manager and Worker (Hr Manager and Worker) in Human Resource team (Hr).
 - This project uses Python, the Flask framwork along with SQLite database and the UI coded with HTML and CSS. In addition, I **also use the apology function and the login_required wrapper in funcs.py from PSET 9 - Finance, so I want to have a special thanks and shout out to the CS50 team members who worte the code**
 *Remarks*: This project mostly aim for back-end skills; therefore, the UI isn't given much attention and there is no JS files! I probably should also learn more about front-end and JS afterwards.
